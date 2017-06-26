@@ -15,7 +15,7 @@ def hash(inStr, radix, modulus):
         from what we used in lecture.
     '''
     hashValue = 0
-    for i in range(1, len(inStr) - 1):
+    for i in range(len(inStr)):
         hashValue = (hashValue * radix + ord(inStr[i])) % modulus
 
     return hashValue
