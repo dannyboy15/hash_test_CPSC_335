@@ -5,7 +5,6 @@ from collections import Counter
 import statistics as stats
 from Hash import *
 
-
 def testHash(radix, modulus, fName):
     print()
     print("Using radix " + str(radix) + " and modulus " + str(modulus) + ".")
@@ -45,9 +44,9 @@ def count_hash(radix, modulus, fName):
         print('{0:8d} {1:8d}'.format(val, cnt))
 
     # print(get_avg_collision(count))
-    print_stats(count.values())
+    stats = print_stats(count.values())
     f.close()
-    return count
+    return stats
 
 
 def run_man_test(how):
@@ -84,20 +83,31 @@ def run_auto_test(how):
 def find_best_prime():
     file = "../Data files/5lw.dat"
     primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,
-              61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127]
+              61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127,
+              131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193,
+              197, 199,]
 
     for rdx in primes:
         for mod in primes:
-            count = count_hash(rdx, mod, file)
-            avg = get_avg_collision(count)
-            print('radix: {0:8d}, modulus: {1:8d} => {2: 8f}'
-                  .format(rdx, mod, avg))
+            sts = count_hash(rdx, mod, file)
+            if sts[0] < 50 and sts[0] > 25:
+                print('radix: {0:8d}, modulus: {1:8d} => {2:f}'
+                  .format(rdx, mod, sts[0]))
+                input()
+            print('radix: {0:8d}, modulus: {1:8d} => {2:}'
+                  .format(rdx, mod, sts))
 
 
 def print_stats(list):
-    print('Mean : {0:f}'.format(stats.mean(list)))
-    print('StDev: {0:f}'.format(stats.stdev(list)))
-    print('Var  : {0:f}'.format(stats.variance(list)))
+    mean = stats.mean(list)
+    stdev = stats.stdev(list)
+    var = stats.variance(list)
+
+    print('Mean : {0:f}'.format(mean))
+    print('StDev: {0:f}'.format(stdev))
+    print('Var  : {0:f}'.format(var))
+
+    return (mean, stdev, var)
 
 
 
